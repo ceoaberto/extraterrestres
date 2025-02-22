@@ -1,0 +1,84 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+}
+
+.game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 600px;
+    padding: 10px;
+}
+
+.menu {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px;
+    justify-content: center;
+}
+
+.menu-item {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.menu-image {
+    width: 100%;
+    height: auto;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+.build-zone {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    background-color: #fafafa;
+    border: 2px dashed #ccc;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.canvas {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.alien-part {
+    position: absolute;
+    cursor: move;
+}
+
+.trash-zone {
+    width: 150px;
+    height: 150px;
+    background-color: #ffdddd;
+    border: 2px dashed #ff4444;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #ff4444;
+}
+
+.trash-bin {
+    font-size: 18px;
+    color: #f44336;
+    cursor: pointer;
+}
