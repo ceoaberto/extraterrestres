@@ -15,8 +15,8 @@ document.addEventListener("DOMContentLoaded", function () {
         clone.style.position = "absolute";
 
         // Ajusta el tamaño del clon al colocarlo en la zona de trabajo
-        clone.style.width = "80px"; // Tamaño fijo
-        clone.style.height = "80px"; // Tamaño fijo
+        clone.style.width = "60px"; // Tamaño más pequeño
+        clone.style.height = "60px"; // Tamaño más pequeño
 
         // Obtén la posición del canvas
         const canvasRect = canvas.getBoundingClientRect();
