@@ -94,6 +94,6 @@ body {
 
     /* Añade esto al final del archivo */
 .alien-part.scaled {
-    transform: scale(1.5); /* Escala el elemento al 150% */
+    transform: scale(0.5); /* Escala el elemento al 150% */
     transition: transform 0.2s ease; /* Animación suave */
 }
