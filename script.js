@@ -41,8 +41,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 canvas.appendChild(clone);
                 clone.style.position = "absolute";
 
-                // Añade el evento de clic para escalar
-                clone.addEventListener("click", function () {
+                // Añade el evento de toque para escalar
+                clone.addEventListener("touchend", function (e) {
+                    e.preventDefault(); // Evita comportamientos no deseados
                     clone.classList.toggle("scaled"); // Alterna la clase "scaled"
                 });
             } else {
