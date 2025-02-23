@@ -9,25 +9,37 @@
 </head>
 <body>
     <div class="game-container">
-        <div class="menu">
+        <div class="menu-container">
             <h2>Elementos</h2>
-            <div class="menu-scroll">
-                <div class="menu-item"><img src="images/CABEZA1.png" alt="Cabeza" class="menu-image"></div>
-                <div class="menu-item"><img src="images/CABEZA2.png" alt="Cabeza" class="menu-image"></div>
-                <div class="menu-item"><img src="images/CABEZA3.png" alt="Cabeza" class="menu-image"></div>
-                <div class="menu-item"><img src="images/BOCA1.png" alt="Boca" class="menu-image"></div>
-                <div class="menu-item"><img src="images/BOCA2.png" alt="Boca" class="menu-image"></div>
-                <div class="menu-item"><img src="images/BOCA3.png" alt="Boca" class="menu-image"></div>
+            <div class="menu" id="menu">
+                <div class="menu-item" data-type="head">
+                    <img src="images/CABEZA1.png" alt="Cabeza" class="menu-image" draggable="false">
+                </div>
+                <div class="menu-item" data-type="mouth">
+                    <img src="images/BOCA1.png" alt="Boca" class="menu-image" draggable="false">
+                </div>
+                <div class="menu-item" data-type="body">
+                    <img src="images/CUERPO2.png" alt="Cuerpo" class="menu-image" draggable="false">
+                </div>
+                <div class="menu-item" data-type="eyes">
+                    <img src="images/OJO1.png" alt="Ojos" class="menu-image" draggable="false">
+                </div>
             </div>
         </div>
+
         <div class="build-zone" id="build-zone">
             <h2>Arrastra aquí</h2>
             <div class="canvas" id="canvas"></div>
         </div>
-        <div class="trash-zone" id="trash-zone">
-            <h2>Eliminar</h2>
-            <div class="trash-bin" id="trash-bin">
-                <i class="fas fa-trash"></i> Eliminar todo
+
+        <div class="trash-container">
+            <div class="trash-zone" id="trash-zone">
+                <h2>Arrastra aquí para borrar</h2>
+                <div class="trash-bin-container">
+                    <div class="trash-bin" id="clear-all">
+                        <i class="fas fa-trash"></i> Eliminar todo
+                    </div>
+                </div>
             </div>
         </div>
     </div>

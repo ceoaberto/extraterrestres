@@ -1,66 +1,93 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const menuItems = document.querySelectorAll(".menu-image");
+document.addEventListener("DOMContentLoaded", () => {
+    const menuItems = document.querySelectorAll(".menu-item");
     const canvas = document.getElementById("canvas");
-    const trashBin = document.getElementById("trash-bin");
+    const trashZone = document.getElementById("trash-zone");
+    const clearAllBtn = document.getElementById("clear-all");
 
     menuItems.forEach(item => {
-        item.addEventListener("touchstart", handleTouchStart, { passive: false });
+        item.addEventListener("touchstart", (e) => {
+            e.preventDefault();
+            createDraggableElement(e.target);
+        });
     });
 
-    function handleTouchStart(event) {
-        event.preventDefault();
-        let touch = event.touches[0];
-        let clone = event.target.cloneNode(true);
-        clone.classList.add("alien-part");
-        clone.style.position = "absolute";
-
-        // Ajusta el tamaño del clon al colocarlo en la zona de trabajo
-        clone.style.width = "60px"; // Tamaño más pequeño
-        clone.style.height = "60px"; // Tamaño más pequeño
-
-        // Obtén la posición del canvas
-        const canvasRect = canvas.getBoundingClientRect();
-
-        // Ajusta las coordenadas relativas al canvas
-        clone.style.left = touch.pageX - canvasRect.left + "px";
-        clone.style.top = touch.pageY - canvasRect.top + "px";
-
-        document.body.appendChild(clone);
-
-        function moveElement(e) {
-            if (e.touches.length === 1) {
-                let moveTouch = e.touches[0];
-                clone.style.left = moveTouch.pageX - canvasRect.left + "px";
-                clone.style.top = moveTouch.pageY - canvasRect.top + "px";
-            }
-        }
-
-        function endMove(e) {
-            let dropTarget = document.elementFromPoint(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
-            if (dropTarget && (dropTarget.id === "canvas" || dropTarget.closest("#canvas"))) {
-                canvas.appendChild(clone);
-                clone.style.position = "absolute";
-
-                // Añade el evento de toque para escalar
-                clone.addEventListener("touchend", function (e) {
-                    e.preventDefault(); // Evita comportamientos no deseados
-                    clone.classList.toggle("scaled"); // Alterna la clase "scaled"
-                });
-            } else {
-                clone.remove();
-            }
-            clone.removeEventListener("touchmove", moveElement);
-            clone.removeEventListener("touchend", endMove);
-        }
-
-        clone.addEventListener("touchmove", moveElement);
-        clone.addEventListener("touchend", endMove);
+    function createDraggableElement(element) {
+        const newElement = document.createElement("div");
+        newElement.classList.add("alien-part");
+        newElement.style.position = "absolute";
+        newElement.style.left = "50%";
+        newElement.style.top = "50%";
+        newElement.style.width = "80px";
+        newElement.style.height = "80px";
+        newElement.style.transformOrigin = "center center";
+        newElement.innerHTML = `<img src="${element.src}" style="width: 100%; height: 100%;">`;
+        canvas.appendChild(newElement);
+        makeElementDraggable(newElement);
+        makeElementResizable(newElement);
     }
 
-    // Eliminar todos los elementos del canvas
-    trashBin.addEventListener("click", function () {
-        while (canvas.firstChild) {
-            canvas.removeChild(canvas.firstChild);
-        }
+    function makeElementDraggable(element) {
+        let startX, startY, initialX, initialY;
+
+        element.addEventListener("touchstart", (e) => {
+            e.preventDefault();
+            let touch = e.touches[0];
+            startX = touch.clientX;
+            startY = touch.clientY;
+            initialX = element.offsetLeft;
+            initialY = element.offsetTop;
+        });
+
+        element.addEventListener("touchmove", (e) => {
+            e.preventDefault();
+            let touch = e.touches[0];
+            let moveX = touch.clientX - startX;
+            let moveY = touch.clientY - startY;
+            element.style.left = initialX + moveX + "px";
+            element.style.top = initialY + moveY + "px";
+        });
+    }
+
+    function makeElementResizable(element) {
+        let initialDistance = null;
+        let scale = 1;
+
+        element.addEventListener("touchmove", (e) => {
+            if (e.touches.length === 2) {
+                e.preventDefault();
+                const touch1 = e.touches[0];
+                const touch2 = e.touches[1];
+                const distance = Math.hypot(
+                    touch2.clientX - touch1.clientX,
+                    touch2.clientY - touch1.clientY
+                );
+                
+                if (initialDistance === null) {
+                    initialDistance = distance;
+                } else {
+                    scale = distance / initialDistance;
+                    element.style.transform = `scale(${scale})`;
+                }
+            }
+        });
+
+        element.addEventListener("touchend", () => {
+            initialDistance = null;
+        });
+    }
+
+    trashZone.addEventListener("touchmove", (e) => {
+        e.preventDefault();
+        let touch = e.touches[0];
+        let elements = document.elementsFromPoint(touch.clientX, touch.clientY);
+        elements.forEach(el => {
+            if (el.classList.contains("alien-part")) {
+                el.remove();
+            }
+        });
+    });
+
+    clearAllBtn.addEventListener("touchstart", () => {
+        canvas.innerHTML = "";
     });
 });
