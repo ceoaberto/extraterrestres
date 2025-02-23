@@ -8,18 +8,25 @@ document.addEventListener("DOMContentLoaded", () => {
         item.addEventListener("touchstart", (e) => {
             e.preventDefault();
             createDraggableElement(e.target);
-        });
+        }, { passive: false });
     });
 
     function createDraggableElement(element) {
         const newElement = document.createElement("div");
         newElement.classList.add("alien-part");
         newElement.style.position = "absolute";
+        
+        // Calcular un tamaño relativo basado en las dimensiones del canvas
+        const canvasSize = Math.min(canvas.offsetWidth, canvas.offsetHeight);
+        const initialSize = canvasSize * 0.15; // 15% de la dimensión más pequeña
+        newElement.style.width = `${initialSize}px`;
+        newElement.style.height = `${initialSize}px`;
+        
+        // Centrar el elemento en el canvas
         newElement.style.left = "50%";
         newElement.style.top = "50%";
-        newElement.style.width = "80px";
-        newElement.style.height = "80px";
-        newElement.style.transformOrigin = "center center";
+        newElement.style.transform = "translate(-50%, -50%)";
+        
         newElement.innerHTML = `<img src="${element.src}" style="width: 100%; height: 100%;">`;
         canvas.appendChild(newElement);
         makeElementDraggable(newElement);
@@ -31,21 +38,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
         element.addEventListener("touchstart", (e) => {
             e.preventDefault();
-            let touch = e.touches[0];
+            const touch = e.touches[0];
             startX = touch.clientX;
             startY = touch.clientY;
             initialX = element.offsetLeft;
             initialY = element.offsetTop;
-        });
+        }, { passive: false });
 
         element.addEventListener("touchmove", (e) => {
             e.preventDefault();
-            let touch = e.touches[0];
-            let moveX = touch.clientX - startX;
-            let moveY = touch.clientY - startY;
+            const touch = e.touches[0];
+            const moveX = touch.clientX - startX;
+            const moveY = touch.clientY - startY;
             element.style.left = initialX + moveX + "px";
             element.style.top = initialY + moveY + "px";
-        });
+        }, { passive: false });
     }
 
     function makeElementResizable(element) {
@@ -66,28 +73,32 @@ document.addEventListener("DOMContentLoaded", () => {
                     initialDistance = distance;
                 } else {
                     scale = distance / initialDistance;
-                    element.style.transform = `scale(${scale})`;
+                    // Mantener el centrado con translate y aplicar el escalado
+                    element.style.transform = `translate(-50%, -50%) scale(${scale})`;
                 }
             }
-        });
+        }, { passive: false });
 
         element.addEventListener("touchend", () => {
-            initialDistance = null;
+            if(event.touches.length < 2){
+                initialDistance = null;
+            }
         });
     }
 
     trashZone.addEventListener("touchmove", (e) => {
         e.preventDefault();
-        let touch = e.touches[0];
-        let elements = document.elementsFromPoint(touch.clientX, touch.clientY);
+        const touch = e.touches[0];
+        const elements = document.elementsFromPoint(touch.clientX, touch.clientY);
         elements.forEach(el => {
             if (el.classList.contains("alien-part")) {
                 el.remove();
             }
         });
-    });
+    }, { passive: false });
 
-    clearAllBtn.addEventListener("touchstart", () => {
+    clearAllBtn.addEventListener("touchstart", (e) => {
+        e.preventDefault();
         canvas.innerHTML = "";
-    });
+    }, { passive: false });
 });
