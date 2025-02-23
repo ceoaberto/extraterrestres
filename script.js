@@ -14,6 +14,10 @@ document.addEventListener("DOMContentLoaded", function () {
         clone.classList.add("alien-part");
         clone.style.position = "absolute";
 
+        // Ajusta el tamaño del clon al colocarlo en la zona de trabajo
+        clone.style.width = "80px"; // Tamaño fijo
+        clone.style.height = "80px"; // Tamaño fijo
+
         // Obtén la posición del canvas
         const canvasRect = canvas.getBoundingClientRect();
 
@@ -36,6 +40,11 @@ document.addEventListener("DOMContentLoaded", function () {
             if (dropTarget && (dropTarget.id === "canvas" || dropTarget.closest("#canvas"))) {
                 canvas.appendChild(clone);
                 clone.style.position = "absolute";
+
+                // Añade el evento de clic para escalar
+                clone.addEventListener("click", function () {
+                    clone.classList.toggle("scaled"); // Alterna la clase "scaled"
+                });
             } else {
                 clone.remove();
             }
@@ -47,6 +56,7 @@ document.addEventListener("DOMContentLoaded", function () {
         clone.addEventListener("touchend", endMove);
     }
 
+    // Eliminar todos los elementos del canvas
     trashBin.addEventListener("click", function () {
         while (canvas.firstChild) {
             canvas.removeChild(canvas.firstChild);
