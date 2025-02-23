@@ -84,7 +84,7 @@ body {
 }
 
 .alien-part.scaled {
-    transform: scale(1.5); /* Escala el elemento al 150% */
+    transform: scale(0.1); /* Escala el elemento al 150% */
     transition: transform 0.2s ease; /* Animación suave */
 }
 
